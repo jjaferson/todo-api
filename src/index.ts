@@ -1,15 +1,24 @@
-import * as http from 'http';
+import * as bodyParser from 'body-parser';
+import "reflect-metadata";
 
-let reqCnt = 1;
+import { Container } from 'inversify';
 
-http.createServer((req, res) => {
+// declare metadata by @controller annotation
+import './controllers/TodoController';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
-  const message = `Request Count: ${reqCnt}`;
+// set up container
+let container = new Container();
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(`<html><head><meta http-equiv="refresh" content="2"></head><body>${message}</body></html>`);
+// create server
+let server = new InversifyExpressServer(container);
+server.setConfig((app) => {
+  // add body parser
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(bodyParser.json());
+});
 
-  console.log("handled request: " + reqCnt++);
-}).listen(3000);
-
-console.log('server running on port 3000');
+let app = server.build();
+app.listen(3000);
