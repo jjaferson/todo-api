@@ -1,0 +1,9 @@
+version: '2'
+services:
+  todo-api-dev:
+    build: .
+    command: yarn run debug
+    volumes: 
+      - ./:/server
+    ports:
+      - "3000:3000"
