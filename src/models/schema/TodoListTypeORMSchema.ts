@@ -2,7 +2,7 @@ import { Task } from "../Task";
 import { ObjectIdColumn, Column, Entity } from "typeorm";
 
 export interface TodoListDTO {
-  _id?: number;
+  _id?: string;
   subject: string;
   tasks: Task[];
   created_at: Date;
@@ -13,7 +13,7 @@ export interface TodoListDTO {
 export class TodoListTypeORMSchema implements TodoListDTO {
 
   @ObjectIdColumn()
-  _id?: number;  
+  _id?: string;  
   
   @Column()
   subject: string;

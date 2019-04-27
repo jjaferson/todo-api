@@ -2,7 +2,7 @@ import { ObjectID, Entity, ObjectIdColumn, Column } from "typeorm";
 import { User } from "../User";
 
 export interface TaskDTO {
-  _id?: number;
+  _id?: string;
   title: string;
   description: string;
   user: User;
@@ -14,7 +14,7 @@ export interface TaskDTO {
 export class TaskTypeORMSchema implements TaskDTO {
   
   @ObjectIdColumn()
-  _id?: number;  
+  _id?: string;  
 
   @Column()
   title: string;
