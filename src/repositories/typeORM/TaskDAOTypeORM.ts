@@ -15,15 +15,15 @@ export class TaskDAOTypeORM extends RepositoryDAOTypeORM<TaskDTO> implements ITa
     return repo.find();
   }
   
-  async create(user: TaskDTO): Promise<TaskDTO> {
+  async create(task: TaskDTO): Promise<TaskDTO> {
     const repo = await this._getRepository(TaskTypeORMSchema);
-    return repo.save(user);
+    return repo.save(task);
   }
 
-  async update(user: TaskDTO): Promise<TaskDTO> {
+  async update(task: TaskDTO): Promise<TaskDTO> {
     const repo = await this._getRepository(TaskTypeORMSchema);
-    await repo.update(user._id, user);
-    return this.find(user._id);
+    await repo.update(task._id, task);
+    return this.find(task._id);
   }
   
   async delete(id: string): Promise<boolean> {

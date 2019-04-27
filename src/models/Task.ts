@@ -7,7 +7,8 @@ export class Task {
     private description: string,
     private user: User,
     private createdAt?: Date,
-    private updatedAt?: Date
+    private updatedAt?: Date,
+    private id?: string
   ) {}
 
   get getTitle(): string {
@@ -28,5 +29,9 @@ export class Task {
 
   get getUpdatedAt(): Date {
     return this.updatedAt;
+  }
+
+  get getId(): string {
+    return this.id;
   }
 }

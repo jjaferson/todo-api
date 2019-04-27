@@ -1,10 +1,10 @@
 import { TaskDTO } from "../models/schema/TaskTypeORMSchema";
 
 export interface ITaskDAO {
-  
+
   find(id: string): Promise<TaskDTO>;
-  create(task: TaskDTO): Promise<TaskDTO>;
+  create(taskDTO: TaskDTO): Promise<TaskDTO>;
   findAll(): Promise<TaskDTO[]>;
-  update(task: TaskDTO): Promise<TaskDTO>;
+  update(taskDTO: TaskDTO): Promise<TaskDTO>;
   delete(id: string): Promise<boolean>;
 }

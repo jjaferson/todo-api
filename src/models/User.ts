@@ -6,7 +6,7 @@ export class User{
     private password?: string,
     private createdAt?: Date,
     private updatedAt?: Date,
-    private id?: number,
+    private id?: string,
   ) {}
 
   get getName(): string {
@@ -29,7 +29,7 @@ export class User{
     return this.password;
   }
 
-  get getId(): number {
+  get getId(): string {
     return this.id;
   }
 
