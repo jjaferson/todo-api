@@ -5,8 +5,8 @@ import * as express from "express";
 export class TodoController implements interfaces.Controller {
 
   @httpGet("/")
-  public getTodoList(){
-    return [];
+  public async getTodoList(){
+
   }
 
 }

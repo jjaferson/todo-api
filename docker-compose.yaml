@@ -7,3 +7,13 @@ services:
       - ./:/server
     ports:
       - "3000:3000"
+  mongodb:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./dbdata:/bitnami
+    environment:
+      - MONGODB_USERNAME=my_user
+      - MONGODB_PASSWORD=password123
+      - MONGODB_DATABASE=my_database
