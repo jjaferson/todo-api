@@ -1,5 +1,5 @@
 import { Task } from "../models/Task";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import Types from "../types";
 import { TaskDTO } from "../models/schema/TaskTypeORMSchema";
 import { ITaskDAO } from "../repositories/ITaskDAO";
@@ -12,6 +12,7 @@ export interface ITaskService {
   removeTask(id: string): Promise<boolean>;
 }
 
+@injectable()
 export class TaskService implements ITaskService{
 
   constructor(
@@ -48,6 +49,7 @@ export class TaskService implements ITaskService{
   }
 
   private toTask(taskDTO: TaskDTO): Task {
+    console.log(taskDTO);
     return new Task(
       taskDTO.title,
       taskDTO.description,

@@ -1,5 +1,7 @@
 import { ObjectID, Entity, ObjectIdColumn, Column } from "typeorm";
 import { User } from "../User";
+import { UserDAOTypeORM } from "../../repositories/typeORM/UserDAOTypeORM";
+import { UserTypeORMSchema } from "./UserTypeORMSchema";
 
 export interface TaskDTO {
   _id?: string;
@@ -22,7 +24,7 @@ export class TaskTypeORMSchema implements TaskDTO {
   @Column()
   description: string;
 
-  @Column(type => User)
+  @Column(type => UserTypeORMSchema)
   user: User;
 
   @Column()

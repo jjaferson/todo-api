@@ -1,5 +1,5 @@
 import { User } from "../models/User";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import Types from "../types";
 import { IUserDAO } from "../repositories/IUserDAO";
 import { UserDTO } from "../models/schema/UserTypeORMSchema";
@@ -12,6 +12,7 @@ export interface IUserService {
   removeUser(id: string): Promise<boolean>;
 }
 
+@injectable()
 export class UserService implements IUserService{
 
   constructor(

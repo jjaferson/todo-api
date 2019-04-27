@@ -1,5 +1,6 @@
 import { Task } from "../Task";
 import { ObjectIdColumn, Column, Entity } from "typeorm";
+import { TaskTypeORMSchema } from "./TaskTypeORMSchema";
 
 export interface TodoListDTO {
   _id?: string;
@@ -18,7 +19,7 @@ export class TodoListTypeORMSchema implements TodoListDTO {
   @Column()
   subject: string;
 
-  @Column(type=> Task)
+  @Column(type=> TaskTypeORMSchema)
   tasks: Task[];
 
   @Column()

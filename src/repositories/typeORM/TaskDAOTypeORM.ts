@@ -2,7 +2,9 @@ import { ITaskDAO } from "../ITaskDAO";
 import { Repository } from "typeorm";
 import { TaskDTO, TaskTypeORMSchema } from "../../models/schema/TaskTypeORMSchema";
 import { RepositoryDAOTypeORM } from "./RepositoryDAOTypeORM";
+import { injectable } from "inversify";
 
+@injectable()
 export class TaskDAOTypeORM extends RepositoryDAOTypeORM<TaskDTO> implements ITaskDAO{
 
   async find(id: string): Promise<TaskDTO> {
@@ -12,7 +14,7 @@ export class TaskDAOTypeORM extends RepositoryDAOTypeORM<TaskDTO> implements ITa
   
   async findAll(): Promise<TaskDTO[]> {
     const repo = await this._getRepository(TaskTypeORMSchema);
-    return repo.find();
+    return repo.find({relations: ['user']});
   }
   
   async create(task: TaskDTO): Promise<TaskDTO> {

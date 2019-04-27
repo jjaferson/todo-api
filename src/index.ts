@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import * as bodyParser from 'body-parser';
-
-import container from './inversify.config';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
 // declare metadata by @controller annotation
 import './controllers/TodoController';
-import { InversifyExpressServer } from 'inversify-express-utils';
+import './controllers/UserController';
 
+import container from './inversify.config';
 
 // create server
 let server = new InversifyExpressServer(container);
