@@ -15,12 +15,12 @@ export class TodoController implements interfaces.Controller {
     @inject(Types.IUserService) private userSerivce: IUserService
   ) {}
 
-  @httpGet("/")
+  @httpGet("/", Types.JWTAuthMiddleware)
   public async getTodoList(){
     return this.taskService.listTask();
   }
 
-  @httpPost("/")
+  @httpPost("/", Types.JWTAuthMiddleware)
   public async createTasks(@request() req: express.Request, @response() res: express.Response) {
     try{
       const user: User = await this.userSerivce.getUser(req.body.userId);
