@@ -1,0 +1,19 @@
+FROM node:8
+
+# Create app directory
+WORKDIR /server
+
+# Install typescript and nodemon
+RUN yarn global add typescript
+
+COPY package*.json ./
+
+RUN yarn install
+
+COPY ./dist /server
+
+CMD ["node", "index.js"]
+
+
+
+

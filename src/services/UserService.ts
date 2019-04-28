@@ -34,7 +34,9 @@ export class UserService implements IUserService{
 
   async addUser(user: User): Promise<User> {
 
-    if (this.userDAO.findByEmail(user.getEmail)) {
+    const existUserDTO: UserDTO = await this.userDAO.findByEmail(user.getEmail);
+
+    if (existUserDTO) {
       throw Error("User alreadt registered with this email");
     }
     // hash user password

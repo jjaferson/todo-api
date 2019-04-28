@@ -15,3 +15,17 @@ services:
       - MONGODB_USERNAME=my_user
       - MONGODB_PASSWORD=password123
       - MONGODB_DATABASE=my_database
+  todo-api-prod: 
+    build: 
+     context: .
+     dockerfile: Dockerfile.production
+    ports:
+      - "3001:3000"
+    environment:
+      - TYPEORM_CONNECTION=mongodb
+      - TYPEORM_HOST=mongodb
+      - TYPEORM_USERNAME=my_user
+      - TYPEORM_PASSWORD=password123
+      - TYPEORM_DATABASE=my_database
+      - TYPEORM_ENTITIES = dist/models/schema/*.js
+      - TYPEORM_SYNCHRONIZE = true
