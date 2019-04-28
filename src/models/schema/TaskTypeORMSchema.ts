@@ -1,18 +1,20 @@
 import { ObjectID, Entity, ObjectIdColumn, Column } from "typeorm";
 import { User } from "../User";
 import { UserDAOTypeORM } from "../../repositories/typeORM/UserDAOTypeORM";
-import { UserTypeORMSchema } from "./UserTypeORMSchema";
+import { UserTypeORMSchema, UserDTO } from "./UserTypeORMSchema";
+import { TodoList } from "../TodoList";
+import { TodoListTypeORMSchema } from "./TodoListTypeORMSchema";
 
 export interface TaskDTO {
   _id?: string;
   title: string;
   description: string;
-  user: User;
+  user: UserDTO;
   created_at?: Date;
   updated_at?: Date;
 }
 
-@Entity('task')
+@Entity()
 export class TaskTypeORMSchema implements TaskDTO {
   
   @ObjectIdColumn()
@@ -25,7 +27,7 @@ export class TaskTypeORMSchema implements TaskDTO {
   description: string;
 
   @Column(type => UserTypeORMSchema)
-  user: User;
+  user: UserDTO;
 
   @Column()
   created_at?: Date;

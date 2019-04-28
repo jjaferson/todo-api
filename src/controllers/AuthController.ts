@@ -4,7 +4,7 @@ import { controller, httpPost, interfaces, response, request, httpGet } from "in
 import { inject } from "inversify";
 import Types from "../types";
 import { UserService } from "../services/UserService";
-import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty, SwaggerDefinitionConstant } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath} from "swagger-express-ts";
 import { Login } from "../models/Login";
 export { Login }
 
@@ -39,6 +39,7 @@ export class AuthController implements interfaces.Controller{
 
     if (!(email && password)) {
       response.status(400).send();
+      return;
     }
 
     try{

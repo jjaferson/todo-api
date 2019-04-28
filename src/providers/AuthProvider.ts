@@ -27,12 +27,19 @@ export class AuthProvider implements interfaces.AuthProvider {
       // Remove Bearer from string
       token = token.slice(7, token.length);
     }
-    let jwtPayload = <any>jwt.verify(token, config.jwtSecret);
+
+    try {
+      let jwtPayload = <any>jwt.verify(token, config.jwtSecret);
+      const { userId, username } = jwtPayload;
+      const user: User = await this.userService.getUser(userId);
+      const principal = new Principal(user);
+      return principal;
+
+    } catch(error) {
+      const principal = new Principal(null);
+      return principal;
+    }
     
-    const { userId, username } = jwtPayload;
-    const user: User = await this.userService.getUser(userId);
-    const principal = new Principal(user);
-    return principal;
   }
 
 }

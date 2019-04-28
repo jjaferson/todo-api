@@ -23,7 +23,7 @@ export class JWTAuthMiddleware extends BaseMiddleware {
     let jwtPayload;
 
     try {
-      jwtPayload = <any>jwt.verify(token, config.jwtSecret);
+      jwtPayload = <any>jwt.verify(token, config.jwtSecret)
       res.locals.jwtPayload = jwtPayload;
     } catch(error) {
       res.status(401).json("Auth token is not supplied");

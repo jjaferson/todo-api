@@ -9,14 +9,13 @@ export interface UserDTO {
   update_at?: Date;
 }
 
-@Entity('user')
+@Entity()
 export  class UserTypeORMSchema implements UserDTO {
   
   @ObjectIdColumn()
   _id: string;  
 
   @Column()
-  @Index({ unique: true })
   email: string;
 
   @Column()
