@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, Column, ObjectID } from "typeorm";
+import { Entity, ObjectIdColumn, Column, ObjectID, Index } from "typeorm";
 
 export interface UserDTO {
   _id: string;
@@ -16,6 +16,7 @@ export  class UserTypeORMSchema implements UserDTO {
   _id: string;  
 
   @Column()
+  @Index({ unique: true })
   email: string;
 
   @Column()

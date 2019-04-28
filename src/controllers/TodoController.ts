@@ -6,10 +6,10 @@ import { ITaskService } from "../services/TaskService";
 import { Task } from "../models/Task";
 import { User } from "../models/User";
 import { IUserService } from "../services/UserService";
+import { ApiPath } from "swagger-express-ts";
 
 @controller("/todo")
 export class TodoController implements interfaces.Controller {
-
 
   @injectHttpContext private readonly _httpContext: interfaces.HttpContext;
   
@@ -17,6 +17,7 @@ export class TodoController implements interfaces.Controller {
     @inject(Types.ITaskService) private taskService: ITaskService,
     @inject(Types.IUserService) private userSerivce: IUserService
   ) {}
+  
 
   @httpGet("/", Types.JWTAuthMiddleware)
   public async getTodoList(){

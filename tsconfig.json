@@ -4,7 +4,7 @@
     "emitDecoratorMetadata": true,
     "target": "es6",
     "module": "commonjs",
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "swagger-express-ts"],
     "outDir": "./dist",
     "sourceMap": true
   }

@@ -1,15 +1,45 @@
 import * as bcrypt from "bcryptjs";
+import { ApiModel, ApiModelProperty, SwaggerDefinitionConstant } from "swagger-express-ts";
 
+@ApiModel({
+  description: 'User',
+  name: 'User',
+})
 export class User{
 
+  @ApiModelProperty({
+    description: "name of the user",
+    required: true,
+    itemType: SwaggerDefinitionConstant.STRING
+  })
+  private name: string
+
+  @ApiModelProperty({
+    description: "email of the user",
+    required: true,
+    itemType: SwaggerDefinitionConstant.STRING
+  })
+  private email: string;
+
+  @ApiModelProperty({
+    description: "password of the user",
+    required: true,
+    itemType: SwaggerDefinitionConstant.STRING
+  })
+  private password?: string;
+
   constructor(  
-    private name: string,
-    private email: string,
-    private password?: string,
+    name: string,
+    email: string,
+    password?: string,
     private createdAt?: Date,
     private updatedAt?: Date,
     private id?: string,
-  ) {}
+  ) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
 
   get getName(): string {
     return this.name;

@@ -11,7 +11,7 @@ export interface IUserService {
   listUser(): Promise<User[]>;
   getUser(id: string): Promise<User>;
   addUser(user: User): Promise<User>;
-  updateUser(user: User): Promise<User>;
+  updateUser(id: string, user: User): Promise<User>;
   removeUser(id: string): Promise<boolean>;
 }
 
@@ -43,9 +43,22 @@ export class UserService implements IUserService{
     return this.toUser(createdUserDTO);
   }
 
-  async updateUser(user: User): Promise<User> {
-    const userDTO = this.toUserDTO(user);
-    const updatedUserDTO = await this.userDAO.update(userDTO);
+  async updateUser(id: string, user: User): Promise<User> {
+    const oldUser = await this.userDAO.find(id);
+    if (!oldUser) {
+      throw Error("User not found");
+    }
+
+    const updateUser : UserDTO = oldUser;
+    if (oldUser.name != user.getEmail) {
+      updateUser.name = user.getEmail;
+    }
+    if (oldUser.email != user.getEmail) {
+      updateUser.email = user.getEmail
+    }
+    updateUser.update_at = new Date();
+
+    const updatedUserDTO = await this.userDAO.update(updateUser);
     return this.toUser(updatedUserDTO);
   }
 

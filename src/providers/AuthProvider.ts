@@ -18,7 +18,10 @@ export class AuthProvider implements interfaces.AuthProvider {
   async getUser(req: Request, res: Response, next: NextFunction): Promise<interfaces.Principal> {
     let token = <string> req.headers['x-access-token'] || req.headers['authorization'];
 
-    if (!token) res.status(401).json("Auth token is not supplied");
+    if (!token) {
+      const principal = new Principal(null);
+      return principal;
+    }
 
     if (token.startsWith('Bearer ')) {
       // Remove Bearer from string
