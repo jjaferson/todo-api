@@ -10,7 +10,7 @@ import { TodoListDTO } from "../models/schema/TodoListTypeORMSchema";
 export interface ITaskService {
   listTask(): Promise<Task[]>;
   getTask(id: string): Promise<Task>;
-  addTask(task: Task): Promise<Task>;
+  addTask(todoListId: string, task: Task): Promise<Task>;
   updateTask(tast: Task): Promise<Task>;
   removeTask(id: string): Promise<boolean>;
   createTodoList(todoList: TodoList): Promise<TodoList>;
@@ -94,11 +94,17 @@ export class TaskService implements ITaskService{
     return this.toTask(taskDTO);
   }
 
-  async addTask(task: Task): Promise<Task> {
-    const taskDTO: TaskDTO = this.toTaskDTO(task);
-    const createdTaskDTO: TaskDTO = await this.taskDAO.create(taskDTO);
+  async addTask(id: string, task: Task): Promise<Task> {
+    const todoList: TodoListDTO = await this.todoListDAO.find(id);
+    if (!todoList) {
+      throw Error("TodoList wasn't found");
+    }
+    
+    const taskDTO: TaskDTO = await this.taskDAO.create(this.toTaskDTO(task));
+    todoList.tasks.push(taskDTO);
 
-    return this.toTask(createdTaskDTO);
+    await this.todoListDAO.update(todoList);
+    return task;
   }
 
   async updateTask(task: Task): Promise<Task> {
@@ -181,7 +187,8 @@ export class TaskService implements ITaskService{
       todolistDTO.subject,
       todolistDTO.tasks.map(toTask),
       todolistDTO.created_at,
-      todolistDTO.update_at
+      todolistDTO.update_at,
+      todolistDTO._id
     );
   }
 

@@ -69,7 +69,7 @@ export class UserController implements interfaces.Controller  {
   @ApiOperationPut({
     description: "Update an exiting user",
     summary: "Router to update an exiting user",
-    path: "/",
+    path: "/{id}",
     parameters: {
       path: {
         id: {

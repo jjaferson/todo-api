@@ -20,11 +20,13 @@ export class AuthController implements interfaces.Controller{
   ) { }
 
   @ApiOperationPost({
-    description: "Authenticate users",
+    description: "Authenticate users to make request to the API, " +
+    "please enter an email and password of a registered user and you will get a response with the token " +
+    "to be added to the headers of each request made to the API",
     summary: "Router to authenticate users on the API",
     path: "/",
     parameters: {
-      body: { description: "New login", required: true, model: "Login" }
+      body: { description: "Authenticate to the API", required: true, model: "Login" }
     },
     responses: {
         200: { description: "Success" },

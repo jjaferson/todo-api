@@ -1,4 +1,4 @@
-import {interfaces, controller, httpGet, httpPost, request, response, injectHttpContext} from "inversify-express-utils";
+import {interfaces, controller, httpGet, httpPost, request, response, injectHttpContext, requestParam, queryParam} from "inversify-express-utils";
 import * as express from "express";
 import { inject } from "inversify";
 import Types from "../types";
@@ -24,15 +24,188 @@ export class TodoController implements interfaces.Controller {
   
 
   @ApiOperationGet({
-    description: "List of Todolist",
+    description: "Get all the tasks",
+    path: "/tasks",
+    summary: "Get tasks all the tasks",
+    parameters: {
+      query: {
+        title: {
+          type:  SwaggerDefinitionConstant.Parameter.Type.STRING,
+          description: "You can query tasks that contains the given work"
+        }
+      }
+    },
+    responses: {
+      200: {
+        type: SwaggerDefinitionConstant.Response.Type.ARRAY,
+        model: 'Task'
+      },
+    },
+    security: {
+      ApiKeyAuth: []
+    }
+  })  
+  @httpGet("/tasks", Types.JWTAuthMiddleware)
+  public async getTasks(
+    @queryParam("title") title: string
+  ) {
+    let tasks: Task[] = await this.taskService.listTask();
+
+    if (title) {
+      tasks = tasks.filter(task => {
+        return task.getTitle.toLowerCase().includes(title.toLowerCase())
+      })
+    }
+    return tasks;
+  }
+
+
+  @ApiOperationGet({
+    description: "Get tasks of a given TODO list",
+    path: "/{id}/tasks",
+    summary: "Get tasks of a given TODO list",
+    parameters: {
+      path: {
+        id: {
+          type: SwaggerDefinitionConstant.Parameter.Type.STRING,
+          required: true
+        }
+      },
+      query: {
+        title: {
+          type:  SwaggerDefinitionConstant.Parameter.Type.STRING,
+          description: "You can query tasks that contains the given work"
+        }
+      }
+    },
+    responses: {
+      200: {
+        type: SwaggerDefinitionConstant.Response.Type.ARRAY,
+        model: 'Task'
+      },
+    },
+    security: {
+      ApiKeyAuth: []
+    }
+  })
+  @httpGet("/:id/tasks", Types.JWTAuthMiddleware)
+  public async getTasksFromList(   
+    @requestParam("id") id: string, 
+    @queryParam("title") title: string,
+    @request() req: express.Request, 
+    @response() res: express.Response){
+
+      try {
+        const todoList: TodoList = await this.taskService.getTodoList(id);
+        let tasks: Task[] = todoList.getTasks;
+
+        if (title) {
+          tasks = tasks.filter(task => {
+            return task.getTitle.toLowerCase().includes(title.toLowerCase())
+          })
+        }
+
+        return tasks;
+      }catch(error) {
+        res.status(400).json({ error: error.message });
+      }
+
+  }
+
+  @ApiOperationPost({
+    description: "Add a task to a given TODO list",
+    summary: "Add a task to a given TODO list",
+    path: "/{id}/task",
+    parameters: {
+      path: {
+        id: {
+          type: SwaggerDefinitionConstant.Parameter.Type.STRING,
+          required: true
+        }
+      },      
+      body: { description: "new todo list", required: true, model: "Task" }
+    },
+    responses: {
+        200: { description: "Success" },
+        400: { description: "Parameters fail" },
+        401: { description: "User not found" }
+    },
+    security: {
+      ApiKeyAuth: []
+    }
+  })
+  @httpPost("/:id/task", Types.JWTAuthMiddleware)
+  public async createTasks(
+    @requestParam("id") id: string, 
+    @request() req: express.Request, 
+    @response() res: express.Response) {
+
+    try {
+      const user: User = this._httpContext.user.details;
+
+      await this.taskService.addTask(id,
+        new Task(
+          req.body.title,
+          req.body.description,
+          user,
+          new Date(),
+          new Date()
+        )
+      );
+      res.sendStatus(201);
+    } catch(error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  @ApiOperationGet({
+    description: "Get a given TODO List",
+    path: "/{id}",
+    summary: "Get a given TODO List with its tasks",
+    parameters: {
+      path: {
+        id: {
+          type: SwaggerDefinitionConstant.Parameter.Type.STRING,
+          required: true
+        }
+      }
+    },
+    responses: {
+      200: {
+        type: SwaggerDefinitionConstant.Response.Type.OBJECT,
+        model: 'TodoList'
+      },
+    },
+    security: {
+      ApiKeyAuth: []
+    }
+  })
+  @httpGet("/:id", Types.JWTAuthMiddleware)
+  public async getListWithTasks(
+    @requestParam("id") id: string,
+    @request() req: express.Request, 
+    @response() res: express.Response) {
+
+    try {
+      return this.taskService.getTodoList(id);
+    }catch(error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  @ApiOperationGet({
+    description: "Get all TODO lists",
     path: "/",
-    summary: "Router to display a list of todoList",
+    summary: "Get all TODO lists with its tasks",
     responses: {
       200: {
         type: SwaggerDefinitionConstant.Response.Type.ARRAY,
         model: 'TodoList'
       }
     },
+    security: {
+      ApiKeyAuth: []
+    }
   })  
   @httpGet("/", Types.JWTAuthMiddleware)
   public async getTodoList(){
@@ -41,8 +214,8 @@ export class TodoController implements interfaces.Controller {
   }
 
   @ApiOperationPost({
-    description: "Create a new todo list with tasks",
-    summary: "Router to create a new todo list with tasks",
+    description: "Create a new TODO list with tasks",
+    summary: "Create a new TODO list with tasks",
     path: "/",
     parameters: {
       body: { description: "new todo list", required: true, model: "TodoList" }
@@ -97,27 +270,6 @@ export class TodoController implements interfaces.Controller {
       res.sendStatus(201);
     } catch (error) {
       res.status(401).json({ error: error.message });
-    }
-  }
-
-  public async createTasks(@request() req: express.Request, @response() res: express.Response) {
-    try {
-
-      const user: User = this._httpContext.user.details;
-      const todoList: TodoList = await this.taskService.getTodoList(req.body.todoListId);
-
-      await this.taskService.addTask(
-        new Task(
-          req.body.title,
-          req.body.description,
-          user,
-          new Date(),
-          new Date()
-        )
-      );
-      res.sendStatus(201);
-    } catch(error) {
-      res.status(400).json({ error: error.message });
     }
   }
 
