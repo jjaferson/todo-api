@@ -5,6 +5,7 @@ import { InversifyExpressServer } from 'inversify-express-utils';
 // declare metadata by @controller annotation
 import './controllers/TodoController';
 import './controllers/UserController';
+import './controllers/AuthController';
 
 import container from './inversify.config';
 

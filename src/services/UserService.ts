@@ -3,6 +3,9 @@ import { inject, injectable } from "inversify";
 import Types from "../types";
 import { IUserDAO } from "../repositories/IUserDAO";
 import { UserDTO } from "../models/schema/UserTypeORMSchema";
+import * as jwt from "jsonwebtoken";
+import config from "../config/config";
+import * as bcrypt from "bcryptjs";
 
 export interface IUserService {
   listUser(): Promise<User[]>;
@@ -30,8 +33,13 @@ export class UserService implements IUserService{
   }
 
   async addUser(user: User): Promise<User> {
+
+    // hash user password
+    user.hashPassword();
+
     const userDTO = this.toUserDTO(user);
     const createdUserDTO = await this.userDAO.create(userDTO);
+
     return this.toUser(createdUserDTO);
   }
 
@@ -47,6 +55,23 @@ export class UserService implements IUserService{
     return Promise.resolve(true);
   }
 
+  async authUser(email: string, password: string) {
+    const userDTO: UserDTO = await this.userDAO.findByEmail(email);
+
+    if (!userDTO || !bcrypt.compareSync(password, userDTO.password)) {
+      throw Error("User not found");
+    }
+
+    const user = this.toUser(userDTO);
+    const token: string = jwt.sign(
+      {userId: user.getId, username: user.getName},
+      config.jwtSecret,
+      { expiresIn: "1h" }
+    );
+
+    console.log(token);
+    return token;
+  }
 
   private toUser(userDTO: UserDTO): User {
     return new User(

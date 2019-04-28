@@ -1,3 +1,5 @@
+import * as bcrypt from "bcryptjs";
+
 export class User{
 
   constructor(  
@@ -33,5 +35,8 @@ export class User{
     return this.id;
   }
 
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 8);
+  }
 
 }

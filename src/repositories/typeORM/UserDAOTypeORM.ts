@@ -5,6 +5,11 @@ import { RepositoryDAOTypeORM } from "./RepositoryDAOTypeORM";
 
 @injectable()
 export class UserDAOTypeORM extends RepositoryDAOTypeORM<UserDTO> implements IUserDAO{
+  
+  async findByEmail(email: string): Promise<UserDTO> {
+    const repo = await this._getRepository(UserTypeORMSchema);
+    return repo.findOne({email: email});
+  }
 
   async find(id: string): Promise<UserDTO> {
     const repo = await this._getRepository(UserTypeORMSchema);

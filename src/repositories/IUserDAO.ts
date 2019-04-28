@@ -6,4 +6,5 @@ export interface IUserDAO {
   findAll(): Promise<UserDTO[]>;
   update(user: UserDTO): Promise<UserDTO>;
   delete(id: string): Promise<boolean>;
+  findByEmail(email: string): Promise<UserDTO>;
 }

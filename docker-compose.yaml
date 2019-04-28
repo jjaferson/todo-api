@@ -2,7 +2,7 @@ version: '2'
 services:
   todo-api-dev:
     build: .
-    command: yarn run debug
+    command: yarn run watch
     volumes: 
       - ./:/server
     ports:

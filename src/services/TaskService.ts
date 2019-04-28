@@ -49,7 +49,6 @@ export class TaskService implements ITaskService{
   }
 
   private toTask(taskDTO: TaskDTO): Task {
-    console.log(taskDTO);
     return new Task(
       taskDTO.title,
       taskDTO.description,
