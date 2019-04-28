@@ -16,9 +16,17 @@ After cloning the code source go to the root folder of the project and run `dock
 
 * Attention to the ports of the containers in case they are being used by other services already.
 
-### API Documentaion
+## API Documentaion
 
-Documentation is available in swagger template once the project is up and running you can access url http://<API-ADDRESS>/api-docs/swagger/#/
+Documentation is available in swagger template once the project is up and running you can access the documentatin on the URL:
+
+* [http://<API-ADDRESS>/api-docs/swagger/#/](http://<API-ADDRESS>/api-docs/swagger/#/)
+
+### Endpoints
+
+![alt text][logo]
+
+[logo]: https://github.com/jjaferson/todo-api/api-endpoints.png "Endpoins"
 
 The API uses JWT token for authentication and the secret key to generate the token is on the file `config/config.ts`
 
