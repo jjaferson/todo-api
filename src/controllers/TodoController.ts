@@ -1,4 +1,4 @@
-import {interfaces, controller, httpGet, httpPost, request, response} from "inversify-express-utils";
+import {interfaces, controller, httpGet, httpPost, request, response, injectHttpContext} from "inversify-express-utils";
 import * as express from "express";
 import { inject } from "inversify";
 import Types from "../types";
@@ -10,6 +10,9 @@ import { IUserService } from "../services/UserService";
 @controller("/todo")
 export class TodoController implements interfaces.Controller {
 
+
+  @injectHttpContext private readonly _httpContext: interfaces.HttpContext;
+  
   constructor(
     @inject(Types.ITaskService) private taskService: ITaskService,
     @inject(Types.IUserService) private userSerivce: IUserService
@@ -22,9 +25,10 @@ export class TodoController implements interfaces.Controller {
 
   @httpPost("/", Types.JWTAuthMiddleware)
   public async createTasks(@request() req: express.Request, @response() res: express.Response) {
-    try{
-      const user: User = await this.userSerivce.getUser(req.body.userId);
+    try {
 
+      const user: User = this._httpContext.user.details;
+      
       await this.taskService.addTask(
         new Task(
           req.body.title,
