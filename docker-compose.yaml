@@ -27,5 +27,6 @@ services:
       - TYPEORM_USERNAME=my_user
       - TYPEORM_PASSWORD=password123
       - TYPEORM_DATABASE=my_database
-      - TYPEORM_ENTITIES = dist/models/schema/*.js
-      - TYPEORM_SYNCHRONIZE = true
+      - TYPEORM_ENTITIES=models/schema/*.js
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=true
