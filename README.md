@@ -26,7 +26,7 @@ Documentation is available in swagger template once the project is up and runnin
 
 ![alt text][logo]
 
-[logo]: https://github.com/jjaferson/todo-api/api-endpoints.png "Endpoins"
+[logo]: https://github.com//jjaferson/todo-api/blob/master/api-endpoints.png?raw=true  "Endpoins"
 
 The API uses JWT token for authentication and the secret key to generate the token is on the file `config/config.ts`
 
