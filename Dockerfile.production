@@ -10,6 +10,8 @@ COPY package*.json ./
 
 RUN yarn install
 
+RUN tsc
+
 COPY ./dist /server
 
 CMD ["node", "index.js"]
