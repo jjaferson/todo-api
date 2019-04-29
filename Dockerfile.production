@@ -6,12 +6,10 @@ WORKDIR /server
 # Install typescript and nodemon
 RUN yarn global add typescript
 
-COPY package*.json ./
+COPY . ./
 
 RUN yarn install && \
     tsc
-
-COPY . .
 
 CMD ["node", "dist/index.js"]
 
