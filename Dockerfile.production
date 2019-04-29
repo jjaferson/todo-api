@@ -11,6 +11,8 @@ COPY . ./
 RUN yarn install && \
     tsc
 
+COPY ./ormconfig.js ./dist
+
 CMD ["node", "dist/index.js"]
 
 
