@@ -8,13 +8,12 @@ RUN yarn global add typescript
 
 COPY package*.json ./
 
-RUN yarn install
+RUN yarn install && \
+    tsc
 
-RUN tsc
+COPY . .
 
-COPY ./dist /server
-
-CMD ["node", "index.js"]
+CMD ["node", "dist/index.js"]
 
 
 
