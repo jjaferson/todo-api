@@ -24,14 +24,14 @@ export class TodoController implements interfaces.Controller {
   
 
   @ApiOperationGet({
-    description: "Get all the tasks",
+    description: "Get all the tasks regardless the TODO list",
     path: "/tasks",
-    summary: "Get tasks all the tasks",
+    summary: "Get all the tasks",
     parameters: {
       query: {
         title: {
           type:  SwaggerDefinitionConstant.Parameter.Type.STRING,
-          description: "You can query tasks that contains the given work"
+          description: "You can query tasks by their title"
         }
       }
     },
@@ -61,20 +61,21 @@ export class TodoController implements interfaces.Controller {
 
 
   @ApiOperationGet({
-    description: "Get tasks of a given TODO list",
+    description: "Get all the tasks of a given TODO List",
     path: "/{id}/tasks",
-    summary: "Get tasks of a given TODO list",
+    summary: "Get all the tasks of a given TODO List",
     parameters: {
       path: {
         id: {
           type: SwaggerDefinitionConstant.Parameter.Type.STRING,
-          required: true
+          required: true,
+          description: "ID of the TODO List"
         }
       },
       query: {
         title: {
           type:  SwaggerDefinitionConstant.Parameter.Type.STRING,
-          description: "You can query tasks that contains the given work"
+          description: "You can query tasks by their title"
         }
       }
     },
@@ -120,7 +121,8 @@ export class TodoController implements interfaces.Controller {
       path: {
         id: {
           type: SwaggerDefinitionConstant.Parameter.Type.STRING,
-          required: true
+          required: true,
+          description: "ID of the TODO List"
         }
       },      
       body: { description: "new todo list", required: true, model: "Task" }
@@ -128,7 +130,7 @@ export class TodoController implements interfaces.Controller {
     responses: {
         200: { description: "Success" },
         400: { description: "Parameters fail" },
-        401: { description: "User not found" }
+        401: { description: "Something went wrong" }
     },
     security: {
       ApiKeyAuth: []
@@ -166,7 +168,8 @@ export class TodoController implements interfaces.Controller {
       path: {
         id: {
           type: SwaggerDefinitionConstant.Parameter.Type.STRING,
-          required: true
+          required: true,
+          description: "ID of the TODO List"
         }
       }
     },
@@ -223,7 +226,7 @@ export class TodoController implements interfaces.Controller {
     responses: {
         200: { description: "Success" },
         400: { description: "Parameters fail" },
-        401: { description: "User not found" }
+        401: { description: "Something went wrong" }
     },
     security: {
       ApiKeyAuth: []

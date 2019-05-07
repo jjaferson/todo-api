@@ -1,5 +1,5 @@
 import * as express from "express";
-import { controller, httpPost, interfaces, response, request, httpGet, httpPut, queryParam } from "inversify-express-utils";
+import { controller, httpPost, interfaces, response, request, httpGet, httpPut, queryParam, requestParam } from "inversify-express-utils";
 import { inject } from "inversify";
 import Types from "../types";
 import { IUserService } from "../services/UserService";
@@ -20,9 +20,9 @@ export class UserController implements interfaces.Controller  {
   ) {}
 
   @ApiOperationGet({
-    description: "Get list of users registred on the system",
+    description: "Get a list of users registred on the system",
     path: "/",
-    summary: "Get list of users registred on the system",
+    summary: "Get all the users registered",
     responses: {
       200: {
         type: SwaggerDefinitionConstant.Response.Type.ARRAY,
@@ -36,8 +36,8 @@ export class UserController implements interfaces.Controller  {
   }
 
   @ApiOperationPost({
-    description: "Register a new user",
-    summary: "Router to register new user",
+    description: "Create a new user on the system",
+    summary: "Create a new user",
     path: "/",
     parameters: {
       body: { description: "New user", required: true, model: "User" }
@@ -45,7 +45,7 @@ export class UserController implements interfaces.Controller  {
     responses: {
         200: { description: "Success" },
         400: { description: "Parameters fail" },
-        401: { description: "User not found" }
+        401: { description: "Something went worng" }
     }
   })
   @httpPost("/")
@@ -68,7 +68,7 @@ export class UserController implements interfaces.Controller  {
 
   @ApiOperationPut({
     description: "Update an exiting user",
-    summary: "Router to update an exiting user",
+    summary: "Update an exiting user",
     path: "/{id}",
     parameters: {
       path: {
@@ -78,7 +78,7 @@ export class UserController implements interfaces.Controller  {
           required : true
         }
       },
-      body: { description: "Data to be updated", required: true, model: "User" }
+      body: { description: "User data to be updated", required: true, model: "User" }
     },
     responses: {
         200: { description: "Success" },
@@ -86,9 +86,9 @@ export class UserController implements interfaces.Controller  {
         401: { description: "User not found" }
     }
   })
-  @httpPut("/")
+  @httpPut("/:id")
   public async updateUser(
-    @queryParam("id") id: string, 
+    @requestParam("id") id: string,
     @request() req: Request,
     @response() res: Response) {
 

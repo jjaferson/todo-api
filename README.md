@@ -36,6 +36,10 @@ export default {
 }
 ```
 
+### Testing
+
+To be implemented
+
 ### Project technologies:
 
   * NodeJS 8+

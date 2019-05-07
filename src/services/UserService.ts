@@ -37,7 +37,7 @@ export class UserService implements IUserService{
     const existUserDTO: UserDTO = await this.userDAO.findByEmail(user.getEmail);
 
     if (existUserDTO) {
-      throw Error("User alreadt registered with this email");
+      throw Error("User already registered with this email");
     }
     // hash user password
     user.hashPassword();
@@ -50,17 +50,19 @@ export class UserService implements IUserService{
 
   async updateUser(id: string, user: User): Promise<User> {
     const oldUser = await this.userDAO.find(id);
+
     if (!oldUser) {
       throw Error("User not found");
     }
 
     const updateUser : UserDTO = oldUser;
-    if (oldUser.name != user.getEmail) {
-      updateUser.name = user.getEmail;
+    if (!!user.getName && oldUser.name !== user.getName) {
+      updateUser.name = user.getName;
     }
-    if (oldUser.email != user.getEmail) {
+    if (!!user.getEmail && oldUser.email !== user.getEmail) {
       updateUser.email = user.getEmail
     }
+
     updateUser.update_at = new Date();
 
     const updatedUserDTO = await this.userDAO.update(updateUser);
@@ -87,7 +89,6 @@ export class UserService implements IUserService{
       { expiresIn: "1h" }
     );
 
-    console.log(token);
     return token;
   }
 
@@ -108,6 +109,8 @@ export class UserService implements IUserService{
       email: user.getEmail,
       name: user.getName,
       password: user.getPassword,
+      created_at: user.getCreatedAtDate,
+      update_at: user.getUpdatedAtDate
     }
   }
 
