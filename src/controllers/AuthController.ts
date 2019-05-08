@@ -20,10 +20,12 @@ export class AuthController implements interfaces.Controller{
   ) { }
 
   @ApiOperationPost({
-    description: "Authenticate users to make request to the API, " +
-    "please enter an email and password of a registered user and you will get a response with the token " +
-    "to be added to the headers of each request made to the API",
-    summary: "Router to authenticate users on the API",
+    summary: "Authenticate users on the API",
+    description: "Authenticate users to make request to the API.<br><br> " +
+    "To generate a token enter an email and password of a registered user and a JWT Token will be sent in the response of the request. " +
+    "The JWT token needs to be added to each request that requires authentication.<br><br>" + 
+    "*Do not forget to add <b>Bearer</b> before the token as the authentication type.<br>" + 
+    "eg.: -H Authorization: Bearer [JWT Token]",
     path: "/",
     parameters: {
       body: { description: "Authenticate to the API", required: true, model: "Login" }

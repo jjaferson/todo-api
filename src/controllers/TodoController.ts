@@ -42,7 +42,7 @@ export class TodoController implements interfaces.Controller {
       },
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })  
   @httpGet("/tasks", Types.JWTAuthMiddleware)
@@ -86,7 +86,7 @@ export class TodoController implements interfaces.Controller {
       },
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })
   @httpGet("/:id/tasks", Types.JWTAuthMiddleware)
@@ -133,7 +133,7 @@ export class TodoController implements interfaces.Controller {
         401: { description: "Something went wrong" }
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })
   @httpPost("/:id/task", Types.JWTAuthMiddleware)
@@ -180,7 +180,7 @@ export class TodoController implements interfaces.Controller {
       },
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })
   @httpGet("/:id", Types.JWTAuthMiddleware)
@@ -207,7 +207,7 @@ export class TodoController implements interfaces.Controller {
       }
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })  
   @httpGet("/", Types.JWTAuthMiddleware)
@@ -229,7 +229,7 @@ export class TodoController implements interfaces.Controller {
         401: { description: "Something went wrong" }
     },
     security: {
-      ApiKeyAuth: []
+      BearerAuth: []
     }
   })
   @httpPost("/", Types.JWTAuthMiddleware)

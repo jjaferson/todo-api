@@ -23,7 +23,7 @@ server.setConfig((app) => {
   // create swagger template
   app.use('/api-docs/swagger', express.static('swagger'));
   app.use('/api-docs/swagger/assets', 
-    express.static('node_modules/swagger-ui-dist')
+    express.static('node_modules/swagger-ui-dist'),
   );
 
   app.use(bodyParser.json());
@@ -36,6 +36,13 @@ server.setConfig((app) => {
       },
       externalDocs : {
         url : "0.0.0.0:3000"
+      },
+      securityDefinitions: {
+        BearerAuth: {  
+          type:"apiKey",
+          name:"Authorization",
+          in:"header"
+       }
       }
     }
   }))
